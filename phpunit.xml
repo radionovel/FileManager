@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         stopOnRisky="false"
+         convertWarningsToExceptions="false"
+         convertNoticesToExceptions="false"
+>
+    <testsuites>
+        <testsuite name="FileManager">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
