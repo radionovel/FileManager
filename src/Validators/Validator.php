@@ -27,7 +27,7 @@ class Validator implements ValidatorContract
      */
     public function __construct(array $allowedExtensions = ['*'])
     {
-        $this->allowedExtensions = $allowedExtensions;
+        $this->setAllowedExtensions($allowedExtensions);
     }
 
     /**
@@ -38,12 +38,12 @@ class Validator implements ValidatorContract
     {
         $path_info = pathinfo($file);
         if (is_dir($file)) {
-            return !in_array($path_info['basename'], $this->excludeDirectories);
+            return !in_array(strtolower($path_info['basename']), $this->excludeDirectories);
         } elseif (is_file($file)) {
             if (in_array('*', $this->allowedExtensions)) {
                 return true;
             }
-            return in_array($path_info['extension'], $this->allowedExtensions);
+            return in_array(strtolower($path_info['extension']), $this->allowedExtensions);
         }
 
         return false;
@@ -62,6 +62,6 @@ class Validator implements ValidatorContract
      */
     public function setAllowedExtensions(array $allowedExtensions): void
     {
-        $this->allowedExtensions = $allowedExtensions;
+        $this->allowedExtensions = array_map('strtolower',$allowedExtensions);
     }
 }
