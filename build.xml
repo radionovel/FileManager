@@ -4,7 +4,7 @@
         simple example build file
     </description>
     <!-- set global properties for this build -->
-    <property name="src" location="module"/>
+    <property name="src" location="src"/>
     <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpcs" value="${basedir}/vendor/bin/phpcs"/>
 
