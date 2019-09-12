@@ -57,4 +57,19 @@ class FileManagerTest extends TestCase
         $this->assertCount(1, $files);
 
     }
+    /**
+     * @throws AccessErrorException
+     * @throws PathNotExistsException
+     */
+    public function testGetRecursiveFilesByExtension()
+    {
+        $manager = new FileManager(__DIR__ . DIRECTORY_SEPARATOR . 'data', ['txt']);
+
+        $files = $manager->getFiles('', true);
+        $this->assertCount(3, $files);
+
+        $manager->getValidator()->setAllowedExtensions(['dat']);
+        $files = $manager->getFiles('', true);
+        $this->assertCount(2, $files);
+    }
 }

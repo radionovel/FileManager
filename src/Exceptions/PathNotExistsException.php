@@ -4,4 +4,6 @@ namespace Radionovel\Exceptions;
 
 use Exception;
 
-class PathNotExistsException extends Exception {}
+class PathNotExistsException extends Exception
+{
+}

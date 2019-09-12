@@ -47,7 +47,7 @@ class FileManager
      */
     public function getValidator(): ValidatorContract
     {
-        if(null === $this->validator){
+        if (null === $this->validator) {
             $this->validator = new Validator($this->allowedExtensions);
         }
 
@@ -92,7 +92,7 @@ class FileManager
         if (is_dir($dir)) {
             $files = scandir($dir);
             foreach ($files as $file) {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $file) && $this->validate($dir . DIRECTORY_SEPARATOR  . $file)) {
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $file) && $this->validate($dir . DIRECTORY_SEPARATOR . $file)) {
                     $directories[] = $file;
                 }
             }
@@ -102,22 +102,37 @@ class FileManager
 
     /**
      * @param string $relative_path
+     * @param bool $recursive
      * @return array
      * @throws AccessErrorException
      * @throws PathNotExistsException
      */
-    public function getFiles(string $relative_path = '')
+    public function getFiles(string $relative_path = '', $recursive = false): array
     {
         $file_list = [];
         $dir = $this->retrieveFullPath($relative_path);
         if (is_dir($dir)) {
             $files = scandir($dir);
+            $tmp_file_list = [];
             foreach ($files as $file) {
-                if (is_file($dir . DIRECTORY_SEPARATOR  . $file) && $this->validate($dir . DIRECTORY_SEPARATOR  . $file)) {
-                    $file_list[] = $file;
+                $file_path = $dir . DIRECTORY_SEPARATOR . $file;
+
+                if (!$this->validate($file_path)) {
+                    continue;
+                }
+
+                if (is_file($file_path)) {
+                    $tmp_file_list[] = $relative_path . '/' . $file;
+                } elseif (true === $recursive && is_dir($file_path)) {
+                    $file_list[] = $this->getFiles($relative_path . DIRECTORY_SEPARATOR . $file);
                 }
             }
+
+            $file_list[] = $tmp_file_list;
         }
+
+        $file_list = array_merge(...$file_list);
+        asort($file_list);
         return $file_list;
     }
 

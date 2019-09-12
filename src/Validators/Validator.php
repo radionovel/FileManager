@@ -62,6 +62,6 @@ class Validator implements ValidatorContract
      */
     public function setAllowedExtensions(array $allowedExtensions): void
     {
-        $this->allowedExtensions = array_map('strtolower',$allowedExtensions);
+        $this->allowedExtensions = array_map('strtolower', $allowedExtensions);
     }
 }
