@@ -103,11 +103,12 @@ class FileManager
     /**
      * @param string $relative_path
      * @param bool $recursive
+     * @param bool $include_relative_path
      * @return array
      * @throws AccessErrorException
      * @throws PathNotExistsException
      */
-    public function getFiles(string $relative_path = '', $recursive = false): array
+    public function getFiles(string $relative_path = '', $recursive = false, $include_relative_path = false): array
     {
         $file_list = [];
         $dir = $this->retrieveFullPath($relative_path);
@@ -122,9 +123,9 @@ class FileManager
                 }
 
                 if (is_file($file_path)) {
-                    $tmp_file_list[] = $relative_path . '/' . $file;
+                    $tmp_file_list[] = ($include_relative_path ? $relative_path . '/' : '') . $file;
                 } elseif (true === $recursive && is_dir($file_path)) {
-                    $file_list[] = $this->getFiles($relative_path . DIRECTORY_SEPARATOR . $file);
+                    $file_list[] = $this->getFiles($relative_path . DIRECTORY_SEPARATOR . $file, $recursive, $include_relative_path);
                 }
             }
 
