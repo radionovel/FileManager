@@ -123,9 +123,15 @@ class FileManager
                 }
 
                 if (is_file($file_path)) {
-                    $tmp_file_list[] = ($include_relative_path ? $relative_path . '/' : '') . $file;
+                    $tmp_file_list[] =
+                        ($include_relative_path ? $relative_path . DIRECTORY_SEPARATOR : '') . $file;
                 } elseif (true === $recursive && is_dir($file_path)) {
-                    $file_list[] = $this->getFiles($relative_path . DIRECTORY_SEPARATOR . $file, $recursive, $include_relative_path);
+                    $file_list[] =
+                        $this->getFiles(
+                            $relative_path . DIRECTORY_SEPARATOR . $file,
+                            $recursive,
+                            $include_relative_path
+                        );
                 }
             }
 
@@ -145,6 +151,10 @@ class FileManager
      */
     private function retrieveFullPath($relative_path): string
     {
+        if (substr($relative_path, 0, 1) !== DIRECTORY_SEPARATOR) {
+            $relative_path = DIRECTORY_SEPARATOR . $relative_path;
+        }
+
         $real_path = realpath($this->basePath . $relative_path);
 
         if (false === $real_path) {
